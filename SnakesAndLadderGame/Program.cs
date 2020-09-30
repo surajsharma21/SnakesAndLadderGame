@@ -9,19 +9,18 @@ namespace SnakesAndLadderGame
         public const int NO_PLAY = 0;
         public const int SNAKE = 1;
         public const int LADDER = 2;
-
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to snakes and ladders game \nEnter player name");
             string player1 = Console.ReadLine();
             int playerCurrentPosition = START_POINT;
-            for (int noOfTimesDiceRolled = 1; playerCurrentPosition >= 0; noOfTimesDiceRolled++)
+            for (int noOfTimesDiceRolled = 1; playerCurrentPosition < 100; noOfTimesDiceRolled++)
             {
                 int diceRoll = DiceRoll();
                 Console.WriteLine("You rolled: " + diceRoll);
                 playerCurrentPosition = PlayerMovement(diceRoll, playerCurrentPosition);
                 Console.WriteLine("Your position: " + playerCurrentPosition);
-                if (playerCurrentPosition >= 100)
+                if (playerCurrentPosition == 100)
                 {
                     Console.WriteLine("Game Over");
                     break;
@@ -35,7 +34,6 @@ namespace SnakesAndLadderGame
             int diceNumber = random.Next(1, 7);
             return diceNumber;
         }
-
         static int PlayerMovement(int numberRolled, int playerPosition)
         {
             Random random = new Random();
@@ -59,8 +57,13 @@ namespace SnakesAndLadderGame
                     }
                 case LADDER:
                     Console.WriteLine("Ladder");
-                    playerPosition = playerPosition + numberRolled;
-                    break;
+                    if (playerPosition + numberRolled <= 100)
+                    {
+                        playerPosition = playerPosition + numberRolled;
+                        break;
+                    }
+                    else
+                        break;
             }
             return playerPosition;
         }
