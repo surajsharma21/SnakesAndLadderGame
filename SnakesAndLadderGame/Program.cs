@@ -9,15 +9,25 @@ namespace SnakesAndLadderGame
         public const int NO_PLAY = 0;
         public const int SNAKE = 1;
         public const int LADDER = 2;
+
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to snakes and ladders game \nEnter player name");
             string player1 = Console.ReadLine();
-            int playerPosition = START_POINT;
-            int diceRoll = DiceRoll();
-            Console.WriteLine("Dice Roll : " + diceRoll);
-            playerPosition = PlayerMovement(diceRoll, playerPosition);
-            Console.WriteLine("Your Position: " + playerPosition);
+            int playerCurrentPosition = START_POINT;
+            for (int noOfTimesDiceRolled = 1; playerCurrentPosition >= 0; noOfTimesDiceRolled++)
+            {
+                int diceRoll = DiceRoll();
+                Console.WriteLine("You rolled: " + diceRoll);
+                playerCurrentPosition = PlayerMovement(diceRoll, playerCurrentPosition);
+                Console.WriteLine("Your position: " + playerCurrentPosition);
+                if (playerCurrentPosition >= 100)
+                {
+                    Console.WriteLine("Game Over");
+                    break;
+                }
+                Console.ReadLine();
+            }
         }
         static int DiceRoll()
         {
@@ -25,6 +35,7 @@ namespace SnakesAndLadderGame
             int diceNumber = random.Next(1, 7);
             return diceNumber;
         }
+
         static int PlayerMovement(int numberRolled, int playerPosition)
         {
             Random random = new Random();
@@ -36,8 +47,16 @@ namespace SnakesAndLadderGame
                     break;
                 case SNAKE:
                     Console.WriteLine("Snake");
-                    playerPosition = playerPosition - numberRolled;
-                    break;
+                    if (playerPosition - numberRolled >= 0)
+                    {
+                        playerPosition = playerPosition - numberRolled;
+                        break;
+                    }
+                    else
+                    {
+                        playerPosition = START_POINT;
+                        break;
+                    }
                 case LADDER:
                     Console.WriteLine("Ladder");
                     playerPosition = playerPosition + numberRolled;
