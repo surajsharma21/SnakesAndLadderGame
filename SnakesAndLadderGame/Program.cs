@@ -12,40 +12,78 @@ namespace SnakesAndLadderGame
 		public const int WINNING_POSITION = 100;
 		static void Main(String[] args)
 		{
-			int currPosition = INITIAL_POSITION;
-			int moves = 0;
+			int player1Pos = INITIAL_POSITION;
+			int player2Pos = INITIAL_POSITION;
+			bool player1 = true;
 			Console.WriteLine("Welcome to Snake Ladder Game!!!");
-			Console.WriteLine("Player is at the starting position");
-			while (currPosition != WINNING_POSITION)
+			Console.WriteLine("Both players are at the starting position");
+			while (player1Pos != WINNING_POSITION && player2Pos != WINNING_POSITION)
 			{
-				Random random = new Random();
-				int diceValue = random.Next(1, 7);
-				Console.WriteLine("Player rolled : " + diceValue);
-				int actionTaken = random.Next(0, 3);
-				if (actionTaken == NO_PLAY)
+				if (player1)
 				{
-					Console.WriteLine("No action taken");
-				}
-				else if (actionTaken == LADDER)
-				{
-					currPosition += diceValue;
-					if (currPosition > WINNING_POSITION)
+					Random random = new Random();
+					int diceValue = random.Next(1, 7);
+					Console.WriteLine("Player rolled : " + diceValue);
+					int actionTaken = random.Next(0, 3);
+					if (actionTaken == NO_PLAY)
 					{
-						currPosition -= diceValue;
+						player1 = false;
+					}
+					else if (actionTaken == LADDER)
+					{
+						player1Pos += diceValue;
+						if (player1Pos > WINNING_POSITION)
+						{
+							player1Pos -= diceValue;
+						}
+					}
+					else
+					{
+						player1 = false;
+						player1Pos -= diceValue;
+						if (player1Pos < INITIAL_POSITION)
+						{
+							player1Pos = INITIAL_POSITION;
+						}
 					}
 				}
 				else
 				{
-					currPosition -= diceValue;
-					if (currPosition < INITIAL_POSITION)
+					Random random = new Random();
+					int diceValue = random.Next(1, 7);
+					Console.WriteLine("Player rolled : " + diceValue);
+					int actionTaken = random.Next(0, 3);
+					if (actionTaken == NO_PLAY)
 					{
-						currPosition = INITIAL_POSITION;
+						player1 = true;
+					}
+					else if (actionTaken == LADDER)
+					{
+						player2Pos += diceValue;
+						if (player2Pos > 100)
+						{
+							player2Pos -= diceValue;
+						}
+					}
+					else
+					{
+						player1 = true;
+						player2Pos -= diceValue;
+						if (player2Pos < INITIAL_POSITION)
+						{
+							player2Pos = INITIAL_POSITION;
+						}
 					}
 				}
-				moves++;
-				Console.WriteLine("Player is at position : " + currPosition);
 			}
-			Console.WriteLine("Player reaches exact winning position in : " + moves + " moves");
+			if (player1Pos == WINNING_POSITION)
+			{
+				Console.WriteLine("Player 1 won the game");
+			}
+			else
+			{
+				Console.WriteLine("Player 2 won the game");
+			}
 		}
 	}
 }
